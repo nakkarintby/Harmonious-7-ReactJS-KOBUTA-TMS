@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
@@ -105,3 +105,56 @@ a {
     color-scheme: dark;
   }
 }
+ */
+
+ .Content-LoginPage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  /* background-color: blueviolet; */
+ }
+
+ .LoginPage-CenterBlock{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: 35vh;
+  width: 40vh;
+  border-radius: 10px;
+  box-shadow: 0px -0px 6px 1px gray;
+ }
+ 
+ .LP-text-logo{
+  min-height: 25px;
+  font-size: 22px;
+  color: #00b09b;
+  font-weight: 600;
+  /* background-color: #febeee; */
+ }
+
+ .LPCB-MainContent{
+  display: flex;
+  flex-direction: column;
+  padding-top: 20%;
+  /* background-color: brown; */
+ 
+  position: relative;
+  width: 100%;
+  height: 100%;
+ }
+
+ .LPCB-button-div{
+  display: flex;
+  justify-content: center;
+  /* background-color: aqua; */
+  width: 100%;
+ }
+
+ .button-login-text{
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  font-family: "Kanit-M"
+ }
