@@ -1,0 +1,231 @@
+@font-face {
+    font-family: Kanit-M;
+    src: url(../../assets/fonts/kanit/Kanit-Medium.ttf);
+}
+
+
+@font-face {
+    font-family: Kanit-L;
+    src: url(../../assets/fonts/kanit/Kanit-Light.ttf);
+}
+.Kanit-M {
+    font-family: Kanit-M;
+}
+
+.Kanit-L {
+    font-family: Kanit-L;
+}
+
+.Nav-item-leftBox{
+    display: flex;
+    align-items: center;
+}
+
+.NavLink-Text{
+    margin-right: 10px;
+}
+
+.VerifyProduct{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 50px 0px 50px;
+    /* background-color: aqua; */
+}
+
+.Criteria_Block{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    height: 250px;
+    /* background-color: red; */
+}
+
+.Criteria-Paginate-block{
+    display: flex;
+    justify-content: space-around;
+    width: 200px;
+}
+
+.Criteria-paginate-button{
+    width: 90px;
+}
+
+
+.VerifyButtonCriteria{
+    margin-bottom: 10px;
+    width: 80px;
+
+}
+ 
+
+.Evaluate {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin: 0px 50px 0px 50px;
+}
+
+.evaluate_button_block{
+    display: flex;
+    justify-content: center;
+    /* background-color: green; */
+}
+
+.evaluate_button_space{
+    width: 180px;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: rebeccapurple; */
+}
+
+.Question-block{
+    margin-left: 8.5%;
+}
+
+.Q1-block{
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    /* background-color: aqua; */
+}
+
+.Q1-link{
+    text-decoration: none;
+    color: rgb(22, 22, 22);
+}
+
+.link-disable{
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+
+.Checkbox-space{
+    display: block;
+    align-self: center;
+    margin-left: 5px;
+}
+
+.container-checkbox {
+    cursor: pointer;
+    display: block;
+    position: relative;
+    height: 25px;
+    width: 25px;
+    /* height: 10px;
+    display: block;
+    position: relative;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 22px; */
+}
+
+.container-checkbox input{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+.container-checkbox:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+.container-checkbox input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+  
+  /* Show the checkmark when checked */
+.container-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.container-checkbox .checkmark:after {
+    border: solid white;
+    top: 5px;
+    left: 9px;
+    width: 6px;
+    height: 13px;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    /* left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg); */
+}
+
+.table_cell{
+    margin: 0;
+}
+.table_cell td{
+    width: 20%;
+}
+
+.table_cell td:first-child{
+
+    width: 30%;
+}
+.table_cell td:last-child{
+    width: 30%;
+}
+
+.button-toggle{
+    display: flex;
+    justify-content: center;
+}
+
+.Shipment-search-spacebox{
+    height: 15vh;
+
+}
+
+.Shipment-search-maincontent{
+    display: flex;
+    justify-content: center;
+}
+
+.Shipment-searchbox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px -0px 6px 1px gray;
+}
+
+.Autocomplete-shipment{
+    margin-bottom: 20px;
+}
+
+.shipment-search-spacebutton{
+    margin-bottom: 25px;
+}

@@ -1,6 +1,6 @@
 'use client'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useIsAuthenticated } from "@azure/msal-react";
-import { InteractionStatus } from "@azure/msal-browser";
+import { IPublicClientApplication, InteractionStatus } from "@azure/msal-browser";
 import { useEffect, useState } from "react";
 import { msalConfig } from "./api/MSAuthentication/authConfig";
 import Image from 'next/image'
@@ -13,6 +13,9 @@ import { red } from "@mui/material/colors";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { cookies } from "next/headers";
 import { deleteCookie } from "./api/MSAuthentication/AuthHandle";
+import { SaveTokenCookie } from "./action/token";
+import { GetUserLoggedData, SaveUserInfo } from "./api/MSAuthentication/AuthClientHandle";
+import { token } from "./constant/NetworkSetting";
 // import { deleteCookie } from "./api/MSAuthentication/AuthHandle";
 // import { loginReqest } from "./api/MSAuthentication/authConfig";
 
@@ -21,6 +24,21 @@ export default function Home() {
     const [userDetail, setuserDetail] = useState(null);
     const { instance, inProgress } = useMsal();
     const isAuthenticated = useIsAuthenticated();
+    useEffect(()=>{
+      if(isAuthenticated){
+        const fetchData = async () => {
+          await SaveTokenCookie(instance)
+          let UserInfo = await GetUserLoggedData(instance, router)
+          await SaveUserInfo(UserInfo!)
+          console.log("WHY")
+        }
+        fetchData()
+        instance.handleRedirectPromise().then((tokenResponse)=>{
+          router.push("/menu")
+        })
+     }
+    })
+    
     const buttonTheme = createTheme({
       palette: {
         primary: {
@@ -28,29 +46,29 @@ export default function Home() {
         }
       },
       });
-      async function handleLogin() {
-        /* await msalInstance.initialize(); */
-        const itemKey = "msal.interaction.status";
-        if (sessionStorage.getItem(itemKey)) {
-          sessionStorage.removeItem(itemKey);
-        }
-        if (!isAuthenticated && inProgress === InteractionStatus.None) {
-          var response = await instance.loginRedirect()
-        }
-        console.log("HAHAHA")
-        // router.push('/mainpage')
+    async function handleLogin() {
+      /* await msalInstance.initialize(); */
+      const itemKey = "msal.interaction.status";
+      if (sessionStorage.getItem(itemKey)) {
+        sessionStorage.removeItem(itemKey);
       }
+      if (!isAuthenticated && inProgress === InteractionStatus.None) {
+          var response = await instance.loginRedirect()
+        /* .then((response) => {
+          console.log("LOGIN", response)
+          setuserDetail({ name: response?.account?.name, token: response? })
 
-      /* async function handleLogin() {
-       instance.loginPopup(loginReqest).catch(x=> console.log(x));
-      } */
+          localStorage.setItem("accessToken" , response?.accessToken)
+      }) */
+      }
+    }
 
     function handleLogout() {
-        instance.logoutPopup().catch(e => {
-            console.log("Error")
-        }).then((rs) => {
-        })
-    }
+      instance.logoutRedirect().catch(e => {
+          console.log("Error")
+      }).then((rs) => {
+      })
+  } 
 
     const makeApiCall = async () => {
         var req = await fetch('api/ApiHelper' , {
@@ -66,7 +84,6 @@ export default function Home() {
         console.log(body["response"])
     }
     return (
-            
             <div className="Content-LoginPage">
               <div className="LoginPage-CenterBlock">
                 <ThemeProvider theme={buttonTheme}>
@@ -80,13 +97,28 @@ export default function Home() {
                     <div className="LPCB-button-div">
                       <AuthenticatedTemplate>
                         <Button color="primary" variant='contained' style={{maxWidth: '130px', maxHeight: '130px', minWidth: '130px', minHeight: '50px'}} onClick={async()=> {handleLogout()}}>
-                          <div className="button-login-text">GO</div>
+                          <div className="button-login-text">Logout</div>
                         </Button>
+                        <br/>
+                        {/* <Button color="primary" variant='contained' style={{maxWidth: '130px', maxHeight: '130px', minWidth: '130px', minHeight: '50px'}} onClick={async()=> 
+                          {
+                            var reqUserInfo = await fetch(`/api/GetUserInfo/ggggggggg`, 
+                              {method:"POST", 
+                              body:JSON.stringify({token:"hhhhhhh"})})
+                          }}>
+                          <div className="button-login-text">Shoot</div>
+                        </Button> */}
                       </AuthenticatedTemplate>
                       <UnauthenticatedTemplate>
                         <Button color="primary" variant='contained' style={{maxWidth: '130px', maxHeight: '130px', minWidth: '130px', minHeight: '50px'}} onClick={async()=> {handleLogin()}}>
                           <div className="button-login-text">Login</div>
                         </Button>
+                        {/* <Button color="primary" variant='contained' style={{maxWidth: '130px', maxHeight: '130px', minWidth: '130px', minHeight: '50px'}} onClick={async()=> 
+                          {
+                            
+                          }}>
+                          <div className="button-login-text">Shoot</div>
+                        </Button>  */}
                       </UnauthenticatedTemplate>
                     </div>
                   </div>

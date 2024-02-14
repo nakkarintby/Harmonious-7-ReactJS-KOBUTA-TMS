@@ -1,10 +1,13 @@
-import { protocol, address, port, token } from "../constant/NetworkSetting"
+'use server'
+import { RedirectType, redirect } from 'next/navigation'
+import { GetTokenCookie } from "../action/cookies"
+import { protocol, address, port } from "../constant/NetworkSetting"
 
 export type RequestApiInfo = { ApiPath:string, header?:{ [index:string]:any } , body?:{ [index:string]:any }}
-var UrlAddress = `${protocol}://${address}:${port}/`
+var UrlAddress = `${protocol}://${address}/`
+
 
 export async function HttpGet(path:string, header?:{ [index:string]:any }) {
-    console.log(UrlAddress)
     var url = `${UrlAddress}${path}`
     var headerValue:{[index:string]:any} = {}
     for(let key in header) {
@@ -17,7 +20,14 @@ export async function HttpGet(path:string, header?:{ [index:string]:any }) {
     return request
 }
 
-export async function HttpAuthGet(path:string, header?:{ [index:string]:any }) {
+export async function HttpAuthGet(path:string, tokenParams?:string, header?:{ [index:string]:any }) {
+    let token:string|undefined = ""
+    if(tokenParams !== undefined) {
+        token = tokenParams
+    }else{
+        let resultToken = await GetTokenCookie()
+        token = resultToken?.value
+    }
     var url = `${UrlAddress}${path}`
     var headerValue:{[index:string]:any} = {}
     headerValue["Authorization"] = `Bearer ${token}`
@@ -29,13 +39,15 @@ export async function HttpAuthGet(path:string, header?:{ [index:string]:any }) {
         { method:"GET", 
         headers: headerValue})
     return request
+    
 }
 
 export async function HttpAuthPost(ApiPath:string, header?:{ [index:string]:any }, body?:{ [index:string]:any }) {
+    let token = await GetTokenCookie()
     var url = `${UrlAddress}${ApiPath}`
     var headerValue:{[index:string]:any} = {}
     var bodyValue:{[index:string]:any} = {}
-    headerValue["Authorization"] = `Bearer ${token}`
+    headerValue["Authorization"] = `Bearer ${token?.value}`
     headerValue["Content-Type"] = "application/json"
     for(let key in header) {
         var value = header[key];

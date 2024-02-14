@@ -13,7 +13,6 @@ export async function GET(request:Request) {
 
 export async function POST(req: Request) {
     var body = await req.json()
-    console.log(body)
     var requests = await HttpAuthPost("api/Case/SelectCaseRelatedUser", undefined, body);
     return new Response(JSON.stringify({response : await requests.json()}))
 }

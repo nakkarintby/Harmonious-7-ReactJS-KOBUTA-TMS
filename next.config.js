@@ -3,7 +3,7 @@ const nextConfig = {async headers() {
     return [
       {
         // matching all API routes
-        source: "/api/:path*",
+        source: "/.api/:path*",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
@@ -21,15 +21,11 @@ const nextConfig = {async headers() {
     ];
   }}
 
-const nextConfig2 = {
-  basePath: '',
-  /* source: "/api/:path*", */
-  /* experimental: {
-    serverActions: true
-  } */
-}
+/* const nextConfig = {
+  basePath: ''
+} */
 
-module.exports = nextConfig2
+module.exports = nextConfig
 
 
 /* {

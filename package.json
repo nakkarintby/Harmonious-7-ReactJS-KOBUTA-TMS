@@ -5,16 +5,17 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prod_start": "NODE_ENV=production node server.js",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.2.0",
     "@azure/msal-react": "^2.0.4",
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.14.14",
-    "@mui/material": "^5.14.14",
+    "@mui/icons-material": "^5.15.7",
+    "@mui/material": "^5.15.7",
     "encodeing": "^1.0.0",
     "msal": "^1.4.18",
     "next": "^14.0.4",

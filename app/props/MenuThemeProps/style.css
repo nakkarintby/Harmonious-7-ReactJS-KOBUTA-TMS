@@ -1,0 +1,25 @@
+
+.NavBar{
+    background-color: #2196f3;
+    width: 100%;
+    height: 6.4vh;
+    position: absolute;
+    
+}
+
+.NavLink-Group{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 3vh;
+    padding-left: 3vh;
+    
+}
+.NavLink-List{
+    display: flex;
+}
+
+.User-main-block{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+}
