@@ -65,9 +65,7 @@ export default function Home() {
                             </div>)
                     }
                 })}
-                {/* <button className='menu-button-props' onClick={async ()=>{}}>
-                    AGAKKKK
-                </button> */}
+              
             </div>
         </div>
     </ThemeProvider>
