@@ -8,3 +8,9 @@ export async function POST (req: Request){
     cookie.set("token", body["token"])
     return new Response()
 }
+
+export async function GET (req:Request) {
+    const cookie = cookies()
+    var token = cookie.get("token")
+    return new Response(JSON.stringify({response:token}))
+}

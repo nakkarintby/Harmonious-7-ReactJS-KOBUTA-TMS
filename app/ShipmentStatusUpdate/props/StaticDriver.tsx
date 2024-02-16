@@ -2,7 +2,6 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import DropPoint from "./DropPoint";
-import FooterCom from "../../pages/footer/footer";
 import ButtonPhoto from "./ButtonPhoto";
 import PhotoDetail from "./PhotoDetail";
 import Signature from "./Signature";
@@ -11,6 +10,7 @@ import "./Home.css";
 import Box from "@mui/material/Box";
 import ConfirmProduct from "./ConfirmProduct";
 import VerifyProduct from "./VerifyProduct";
+import FooterCom from "./footer/footer";
 
 //Tabs Button
 

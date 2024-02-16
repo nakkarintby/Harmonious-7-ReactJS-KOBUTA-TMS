@@ -42,12 +42,27 @@ export async function HttpAuthGet(path:string, tokenParams?:string, header?:{ [i
     
 }
 
-export async function HttpAuthPost(ApiPath:string, header?:{ [index:string]:any }, body?:{ [index:string]:any }) {
-    let token = await GetTokenCookie()
-    var url = `${UrlAddress}${ApiPath}`
+export async function HttpPost(path:string, initRequest:RequestInit) {
+    var url = `${UrlAddress}${path}`
+
+    var headerValue:BodyInit  = JSON.stringify({})
+    var bodyValue:{[index:string]:any} = {}
+    var response = await fetch(url, bodyValue)
+    return response
+}
+
+export async function HttpAuthPost(path:string, tokenParams?:string, header?:{ [index:string]:any }, body?:{ [index:string]:any }) {
+    let token:string|undefined = ""
+    if(tokenParams !== undefined) {
+        token = tokenParams
+    }else{
+        let resultToken = await GetTokenCookie()
+        token = resultToken?.value
+    }
+    var url = `${UrlAddress}${path}`
     var headerValue:{[index:string]:any} = {}
     var bodyValue:{[index:string]:any} = {}
-    headerValue["Authorization"] = `Bearer ${token?.value}`
+    headerValue["Authorization"] = `Bearer ${token}`
     headerValue["Content-Type"] = "application/json"
     for(let key in header) {
         var value = header[key];

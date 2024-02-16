@@ -26,6 +26,7 @@ async function GetMenu(instance: IPublicClientApplication, router:AppRouterInsta
 async function GetMenuRole(instance: IPublicClientApplication, router:AppRouterInstance) {
     let MenuRoleUser:MenuRole[] = []
     let req = await CallHttp("/api/GetMenuRole", {method:"GET"}, router)
+    console.log(req)
     let data:[] = req["response"]["data"]
     for(let i=0; i < data.length; i++) {
         var injecter:MenuRole = await MenuRoleConvert(data[i]);

@@ -1,10 +1,4 @@
 'use client'
-
-import { IPublicClientApplication } from "@azure/msal-browser"
-import { MenuApp, MenuAppConvert } from "../constant/Menu/MenuObj"
-import { useMsal } from "@azure/msal-react";
-import { handleLogout } from "./MSAuthentication/AuthClientHandle";
-import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 

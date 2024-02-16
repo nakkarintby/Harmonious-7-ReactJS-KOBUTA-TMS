@@ -125,33 +125,6 @@ export default function Home() {
                 </ThemeProvider>
               </div>
             </div>
-            
-            /* Azure Login
-            <AuthenticatedTemplate>
-                <h6>logout</h6>
-                {userDetail && (<>Name : {userDetail.token}</>)}
-                <button onClick={() => handleLogout()}>LogOut</button>
-            </AuthenticatedTemplate>
-
-            <UnauthenticatedTemplate>
-                <h6>login</h6>
-                <button onClick={() => handleLogin()}>LogIn</button>
-            </UnauthenticatedTemplate> */
     )
 
 }
-
-// router.push('/pages/driver/question1')
-
-/* const defaultTheme = createTheme({
-  typography: {
-    fontFamily: ["Kanit-M"].join(","),
-  },
-  components: {
-    MuiUseMediaQuery: {
-      defaultProps: {
-        noSsr: true,
-      },
-    },
-  },
-}); */

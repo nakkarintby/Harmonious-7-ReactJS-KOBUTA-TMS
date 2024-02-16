@@ -8,6 +8,54 @@
     font-family: Kanit-L;
     src: url(../../assets/fonts/kanit/Kanit-Light.ttf);
 }
+
+.confirm-modal{ 
+    width: 500px;
+    height: 650px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    padding: 10px;
+    border-radius: 2%;
+    overflow: scroll;
+    background-color: white;
+}
+
+.confirm-modal-title{
+    text-align: center;
+}
+
+.confirm-modal-mainbox{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.confirm-modal-mainbox div {
+    display: flex;
+    font-size: 18px;
+    margin-right: 8px;
+    /* background-color: gold; */
+}
+
+.custom-checkbox-root .MuiSvgIcon-root{
+    width: 30px;
+    height: 30px;
+}
+
+.confirm-modal-mainbox div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+/* .confirm-modal div {
+    display: flex;
+    text-align: start;
+    flex-direction: column;
+    background-color: red;
+} */
+
 .Kanit-M {
     font-family: Kanit-M;
 }

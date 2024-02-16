@@ -1,6 +1,7 @@
 import { PublicClientApplication , LogLevel } from "@azure/msal-browser";
 
 export const msalConfig = {
+    //https://login.microsoftonline.com/baf9db62-787f-4e77-8297-738b7509b47d
     auth: {
         clientId: "60b30165-972f-48af-8c59-4a97f98ca374",
         authority: "https://login.microsoftonline.com/baf9db62-787f-4e77-8297-738b7509b47d",

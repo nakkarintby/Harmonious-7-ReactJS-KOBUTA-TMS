@@ -5,13 +5,46 @@ import MenuTheme from "../props/MenuThemeProps/MenuTheme"
 import NavbarMenuTheme from "../props/MenuThemeProps/NavbarMenuTheme"
 import TopToolbar from "./props/Toolbar"
 import "./props/Home.css"
-import { Autocomplete, Button, TextField } from "@mui/material"
+import { Autocomplete, Button, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { useRouter } from "next/navigation"
-import React from "react"
+import React, { useEffect } from "react"
+import { CallHttp2 } from "../api/ApiCallPlateform"
+import { OrderForm } from "../constant/OrderForm/OrderForm"
+
+
+async function LicenseHandleSubmit (license:string) {
+  var request = await fetch("https://d736apsi01-wa02skc.azurewebsites.net/Order/GetShipmentbyLicense",
+  {method:"POST", body:JSON.stringify({license:license}), headers:{"Content-Type":"application/json"}}
+  )
+  var response = await request.json()
+  if(response["data"]["shipmentGroup"] === null) {
+    return "Not Found"
+  }
+  return response["data"]
+}
+
+function SendDataToDetailPage(license:string, shipingGroup:string, shipingTo:string) {
+  localStorage.setItem("DetailSearch",
+  JSON.stringify({license:license, shipingGroup:shipingGroup, shipingTo:shipingTo}))
+}
 
 export default function ShipmentSearch() {
-  let [licenseFeild, setLicenseFeild] = React.useState<String>("")
+  let [licenseFeild, setLicenseFeild] = React.useState<string>("")
+  let [shipingGroupField, setShippingGroup] = React.useState<string>("")
+  let [shipingToList, setShipingToList] = React.useState<string[]>([])
+  let [shipingToCurrField, setShipingToCurr] = React.useState<string>("")
+  //useState For valid
+  let [isLicenseValid, setIsLicenseValid] = React.useState<boolean>(false)
+  let [isSG_Vaild, setIsSG_Valid] = React.useState<boolean>(false)
+  let [isST_Vaild, setIsST_Valid] = React.useState<boolean>(false)
+  //////////////////
     const router = useRouter()
+    useEffect(()=>{
+      const fetchData = async () => {
+        
+      }
+      fetchData()
+    })
     return (
 <>
 <IsAuthenticationTemplate>
@@ -26,24 +59,37 @@ export default function ShipmentSearch() {
                 <h2>Search</h2>
                 <div className="Autocomplete-shipment">
                   <TextField label="License" style={{minWidth:300}} 
-                  onChange={(event)=>{setLicenseFeild(event.target.value)}} 
-                  onKeyDown={(ev)=>{
+                  onChange={(event)=>{
+                    setLicenseFeild(event.target.value)
+                    if(shipingGroupField !== "") {
+                      setShippingGroup("")
+                    }
+                    if(shipingToCurrField !== "") {
+                      setShipingToCurr("")
+                    }
+                    }
+                  }
+                  error={isLicenseValid}
+                  onKeyDown={async (ev)=>{
                     if(ev.key === "Enter") {
-                      console.log(licenseFeild)
+                      var result = await LicenseHandleSubmit(licenseFeild)
+                      if(result === "Not Found") {
+                        alert("License Not Found")
+                        setIsLicenseValid(true)
+                        return
+                      }
+                      setIsLicenseValid(false)
+                      setShippingGroup(result["shipmentGroup"][0])
+                      setShipingToCurr(result["shipToList"][0])
+                      setShipingToList(result["shipToList"])
                     }
                   }}/>
                 </div>
                 <div className="Autocomplete-shipment">
-                    <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={top100Films}
-                    sx={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} label="Shipment Group" />}
-                    />
+                  <TextField error={isSG_Vaild} style={{minWidth:300, fontSize:20}} value={shipingGroupField} placeholder="Shiping Group" />
                 </div>
                 <div className="Autocomplete-shipment">
-                    <Autocomplete
+                    {/* <Autocomplete
                     disablePortal
                     id="combo-box-demo"
                     options={top100Films}
@@ -52,11 +98,39 @@ export default function ShipmentSearch() {
                       console.log(newValue)
                     }}
                     renderInput={(params) => <TextField {...params} label="Ship To"/>}
-                    />
+                    /> */}
+                    <Select
+                      error={isST_Vaild}
+                      labelId="demo-simple-select-helper-label"
+                      id="demo-simple-select-helper"
+                      label="Age"
+                      style={{minWidth: 300}}
+                      value={shipingToCurrField}
+                      onChange={(event: SelectChangeEvent)=>{
+                        setShipingToCurr(event.target.value)
+                      }}
+                  >
+                      {shipingToList.map((key, index)=>{
+                          return(<MenuItem key={index} value={key}>{key}</MenuItem>)
+                      })}
+                    </Select>
                 </div>
                 <div className="shipment-search-spacebutton">
-                    <Button variant="outlined" onClick={()=>{
-                        router.push("/ShipmentStatusUpdate/ShipmentDetail")
+                    <Button variant="outlined" onClick={async()=>{
+                      if(licenseFeild === null || licenseFeild === "") {
+                        setIsLicenseValid(true)
+                        return
+                      }
+                      if(shipingGroupField === null || shipingGroupField ==="") {
+                        setIsSG_Valid(true)
+                        return
+                      }
+                      if(shipingToCurrField === null || shipingToCurrField === "") {
+                        setIsST_Valid(true)
+                        return
+                      }
+                      SendDataToDetailPage(licenseFeild, shipingGroupField, shipingToCurrField)
+                      router.push("/ShipmentStatusUpdate/ShipmentDetail")
                     }}>Search</Button>
                 </div>
             </div>
@@ -70,7 +144,9 @@ export default function ShipmentSearch() {
 
 const TestDataList = 
 [
-  { Jabare:"TEST1"}
+  { Jabare:"TEST1", orade:"001"},
+  { Jabare:"TEST2", orade:"002"},
+  { Jabare:"TEST3", orade:"003"}
 ]
 
 const top100Films = [

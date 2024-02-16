@@ -8,23 +8,39 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useEffect } from "react";
+import { OrderForm } from "../../constant/OrderForm/OrderForm";
+import { matDetail } from "../ShipmentDetail/page";
 
-type Props = {};
 
 
-
-export default function DropPoint({MatCodesList, currentMatCode, setMatCode}:{MatCodesList:string[], currentMatCode:string, setMatCode:React.Dispatch<React.SetStateAction<string>>}) {
+export default function DropPoint({currMatCode, orderForm, matDetailList, setCurrMatcode}:{currMatCode:matDetail, orderForm:OrderForm, matDetailList:matDetail[], setCurrMatcode:React.Dispatch<React.SetStateAction<matDetail|undefined>>}) {
   const cards = [1];
   const drops = [1];
   const [value, setValue] = React.useState(0);
+  
+  /* useEffect(()=>{
+    if(orderForm !== undefined) {
+      var result:matDetail[] = createMatDetailList(orderForm)
+      setMatDetailList(result)
+    }
+  },[orderForm]) */
+  
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   const matCodeHandleChange = (event: SelectChangeEvent) => {
-    setMatCode(event.target.value)
+    matDetailList.map((item, index)=>{
+      if(item.serialNo === event.target.value) {
+        console.log(item.serialNo)
+        setCurrMatcode(item)
+      }
+    })
+    
   };
-
+/*   useEffect(()=>{
+    orderForm
+  }) */
   return (
     <>
       <Container sx={{ py: 4 }}>
@@ -78,7 +94,7 @@ export default function DropPoint({MatCodesList, currentMatCode, setMatCode}:{Ma
               >
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Shipment Group : KLD {value + 1}
+                    Shipment Group : {orderForm ? orderForm.shipmentGroup : ""}
                   </Typography>
                   <List
                     sx={{
@@ -89,19 +105,19 @@ export default function DropPoint({MatCodesList, currentMatCode, setMatCode}:{Ma
                     <ListItem>
                       <ListItemText
                         primary="License Plate"
-                        secondary="63-0436"
+                        secondary={orderForm ? orderForm.licensePlate : ""}
                       />
                       <ListItemText>
                       <Select
                         style={{minWidth:200}}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={currentMatCode}
+                        value={(currMatCode) ? currMatCode.serialNo : "NONE"}
                         label="Age"
                         onChange={matCodeHandleChange}
                       >
-                        {MatCodesList.map((item, index)=>{
-                          return(<MenuItem key={index} value={item}>{item}</MenuItem>)
+                        {matDetailList.map((item, index)=>{
+                          return(<MenuItem key={index} value={item.serialNo}>{item.materialCode +"_"+item.serialNo}</MenuItem>)
                         })}
                       </Select>
                       </ListItemText>
@@ -109,7 +125,7 @@ export default function DropPoint({MatCodesList, currentMatCode, setMatCode}:{Ma
                     
                     <Divider component="li" />
                     <ListItem>
-                      <ListItemText primary="Serial No." secondary="XXXX1" />
+                      <ListItemText primary="Serial No." secondary={orderForm ? orderForm.serialNo : ""} />
                       <ListItemText primary="Product Description" secondary="M108" />
                       <ListItemText primary="Qty." secondary="1" />
                     </ListItem>
