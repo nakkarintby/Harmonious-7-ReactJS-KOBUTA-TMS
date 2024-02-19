@@ -3,27 +3,21 @@ import { AuthenticatedTemplate } from "@azure/msal-react"
 import { ThemeProvider } from "@mui/material"
 import defaultTheme from "../ShipmentStatusUpdate/props/Theme"
 import NavbarMenuTheme from "../props/MenuThemeProps/NavbarMenuTheme"
-import UsersTable from "./Props/UserTable"
+import DatatableDocument from "../components/datatable_user/DatatableUser"
 
-export default function Users () {
+export default async function Users() {
     return (
-<>
-    <AuthenticatedTemplate>
-        <ThemeProvider theme={defaultTheme}>
-            <div className="UserBoxPage">
-                <div className="NavBoxGlobal">
-                <NavbarMenuTheme CanPreviousBack={true}/>
-                </div>
-                <div className="User-main-block">
-                    <div className="User-header-content">
+        <>
+            <AuthenticatedTemplate>
+                <ThemeProvider theme={defaultTheme}>
+                    <div className="UserBoxPage">
+                        <div className="NavBoxGlobal">
+                            <NavbarMenuTheme CanPreviousBack={true} />
+                        </div>
+                        <DatatableDocument />
                     </div>
-                    <div>
-                        <UsersTable/>
-                    </div>
-                </div>
-            </div>
-        </ThemeProvider>
-    </AuthenticatedTemplate>
-</>
-)
+                </ThemeProvider>
+            </AuthenticatedTemplate>
+        </>
+    )
 }

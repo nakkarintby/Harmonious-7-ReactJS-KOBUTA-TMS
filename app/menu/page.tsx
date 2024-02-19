@@ -48,6 +48,29 @@ export default function Home() {
         }
         FetchMenu()
     },[router])
+
+
+    // //save token
+    // const account = instance.getAllAccounts()[0]
+    // if(account == undefined) return undefined
+    // const accessTokenRequest = {
+    //   scopes: ["user.read"],
+    //   account: account,
+    // }
+    // /* instance.acquireTokenSilent(accessTokenRequest) */
+    // instance.acquireTokenSilent(accessTokenRequest)
+    // .then(async function (accessTokenResponse) {
+    //   // Acquire token silent success
+    //   let accessToken = accessTokenResponse.accessToken;
+    //   localStorage.setItem('token',accessToken);
+    //   return accessToken
+    // })
+    // .catch(function (error) {
+    //   //Acquire token silent failure
+    //   console.log(error);
+    //   /* handleLogout(); */
+    // });
+
     return(
 <AuthenticatedTemplate>
     <ThemeProvider theme={defaultTheme}>
