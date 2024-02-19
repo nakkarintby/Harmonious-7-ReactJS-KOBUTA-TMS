@@ -25,6 +25,7 @@
       "@authConfig" : ["./src/authConfig"]
     }
   },
-  "include": ["next-env.d.ts" , "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/action/cookies.ts"],
+  
+  "include": ["next-env.d.ts" , "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/action/cookies.ts", "app/components/datatable_user/DatatableUser.jsx"],
   "exclude": ["node_modules"]
 }
