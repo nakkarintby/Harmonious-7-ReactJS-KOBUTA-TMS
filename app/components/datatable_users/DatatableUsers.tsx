@@ -1,6 +1,6 @@
 
 'use client'
-import "./DatatableUser.scss";
+import "./DatatableUsers.scss";
 import React, { useState } from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -13,7 +13,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Modal from 'react-modal';
 import Link from 'next/link'
 
@@ -22,12 +22,6 @@ async function GetUserList(router: AppRouterInstance) {
   var req = await CallHttp("/api/GetUserList", { method: "GET" }, router)
   let data: [] = req["response"]["data"]
   return data;
-}
-
-async function viewInfo(params: any) {
-  const router = useRouter();
-  localStorage.setItem('uid', params);
-  router.push('/EditUser');
 }
 
 
@@ -67,34 +61,32 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
 }));
 
 
-const DatatableDocument = () => {
+const DatatableUsers = () => {
   const MyCustomNoRowsOverlay = () => (
     <img className="notfound" src="https://qph.cf2.quoracdn.net/main-qimg-5357d4bafce6753e6e40baaeeef0356c" alt="no-item" height="299px" width="480px" />
   );
   const [data, setData] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  
+
 
   useEffect(() => {
     loadingToggle();
     async function fetchMyAPI() {
       let result = await GetUserList(router)
       setData(result);
-      console.log(result)
     }
     fetchMyAPI()
   }, [])
 
   const LoadingRequest = () => {
     return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(
-            ''
-          );
-        }, 1500);
-      });
+      setTimeout(() => {
+        resolve(
+          ''
+        );
+      }, 1500);
+    });
   };
 
   const loadingToggle = async () => {
@@ -122,11 +114,6 @@ const DatatableDocument = () => {
     { field: "createdBy", headerName: "createdBy", minWidth: 50, flex: 1, headerAlign: 'left', align: 'left', headerClassName: 'grid-header' },
   ];
 
-  const handleChangeSearch = (e: any) => {
-    e.preventDefault();
-    setSearchInput(e.target.value);
-  };
-
   async function viewInfo(params: any) {
     localStorage.setItem('uid', params);
     /*var cookie2 = localStorage.setItem('uid',
@@ -135,60 +122,62 @@ const DatatableDocument = () => {
   }
 
   return (
-    
-    <div className="allitem">
-          <div style={{ display: isLoading ? 'flex' : 'none' }} className='loading-toggle'>
+    <div className="body">
+      <div style={{ display: isLoading ? 'flex' : 'none' }} className='loading-toggle'>
         <div className='loading-toggle-content'>
           <div className='loading-toggle-pic'></div>
           <div className='loading-toggle-text'>Loading...</div>
         </div>
       </div>
-      <div className="item-header">
-        <div className="item-header-text">
-          <h1>User</h1>
+
+
+      <div className="container" >
+        <div className="table-card">
+          <div className="header">
+            <div className="header-item">
+              <Button  variant="contained" endIcon={<AddBoxIcon />} onClick={() => router.push('/CreateUser')} >
+                CREATE
+              </Button>
+            </div>
+          </div>
+   
+          <div className="content" style={{ height: data.length == 0 ? '410px' : '' }}>
+            <StripedDataGrid
+              sx={{
+                height: '100%',
+                width: '100%',
+                '& .grid-header': {
+                  backgroundColor: 'rgb(37, 150, 190)',
+                  color: "white",
+                  fontSize: '16px'
+                },
+              }}
+              getRowClassName={(params) =>
+                params.indexRelativeToCurrentPage % 2 === 0 ? 'odd' : 'even'
+              }
+              initialState={{
+                pagination: {
+                  paginationModel: { pageSize: 8, page: 0 },
+                },
+              }}
+
+              rows={data}
+              columns={columns}
+              getRowId={(data: any) => data.userId}
+              slots={{
+                noRowsOverlay: MyCustomNoRowsOverlay
+              }}
+              pageSizeOptions={[8]}
+            />
+
+          </div>
+          <div className="footer">
+            Master User
+          </div>
         </div>
-
-        <div className="item-header-space"></div>
-
-        <Button className="item-header-button" variant="contained" endIcon={<AddIcon />} onClick={() => router.push('/CreateUser')} >
-          CREATE
-        </Button>
-      </div>
-
-      <div className="item-datatable" style={{ height: data.length == 0 ? '410px' : '' }}>
-
-        <StripedDataGrid
-
-          sx={{
-            height: '100%',
-            width: '100%',
-            '& .grid-header': {
-              backgroundColor: 'rgba(79, 149, 201, 0.8)',
-
-
-            },
-          }}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-          }
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 8, page: 0 },
-            },
-          }}
-
-          rows={data}
-          columns={columns}
-          getRowId={(data: any) => data.userId}
-          slots={{
-            noRowsOverlay: MyCustomNoRowsOverlay
-          }}
-          pageSizeOptions={[8]}
-        />
-
       </div>
     </div>
   );
 };
 
-export default DatatableDocument;
+export default DatatableUsers;

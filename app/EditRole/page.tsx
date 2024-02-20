@@ -28,7 +28,7 @@ import { UserInformation } from "../constant/UserInfo/UserInformation"
 import React from "react"
 import { Stack, InputAdornment } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
-import { User } from "../constant/User/User"
+import { Role } from "../constant/Role/Role"
 
 async function GetToken(router: AppRouterInstance) {
   var req = await CallHttp("/api/GetToken", { method: "GET" }, router)
@@ -37,14 +37,14 @@ async function GetToken(router: AppRouterInstance) {
 }
 
 
-const EditUser = () => {
+const EditRole = () => {
   const [cookie, setCookie] = useState('')
-  const [user, setUser] = React.useState<User>()
+  const [role, setRole] = React.useState<Role>()
   const router = useRouter();
   const [shrink, setShrink] = useState(false);
-  const [userName, setUserName] = useState('')
+  const [roleName, setRoleName] = useState('')
   const [transporterId, setTransporterId] = useState('')
-  const [roleId, setRoleId] = useState('')
+  const [systemRoleId, setsystemRoleId] = useState('')
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -75,8 +75,10 @@ const EditUser = () => {
 
   useEffect(() => {
     if (cookie !== undefined) {
-      var uid = localStorage.getItem("uid")
-      fetch('https://d736apsi01-wa02skc.azurewebsites.net/User/GetById?userId=' + uid, {
+      var roleid = localStorage.getItem("roleid")
+      var tmp = ''+roleid
+      setsystemRoleId(tmp)
+      fetch('https://d736apsi01-wa02skc.azurewebsites.net/User/GetSystemRoleById?systemRoleId=' + roleid, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${cookie}`,
@@ -86,51 +88,36 @@ const EditUser = () => {
         .then(async (res) => {
           var response = await res.json();
           var test = JSON.stringify(response["data"])
-          var result: User = JSON.parse(test);
-          setUser(result);
-          setUserName(result.userName);
-          setTransporterId(result.transporterId);
-          setRoleId(result.systemRoleId.toString());
+          var result: Role = JSON.parse(test);
+          setRole(result);
+          setRoleName(result.name);
         })
         .catch((data) => {
         });
     }
   }, [cookie]);
 
-  const handleChangeUserName = (e:any) => {
+  const handleChangeRoleName = (e:any) => {
     e.preventDefault();
-    setUserName(e.target.value);
+    setRoleName(e.target.value);
   };
 
-  const handleChangeTransporterId = (e:any) => {
-    e.preventDefault();
-    setTransporterId(e.target.value);
-  };
-
-  const handleChangeRoleId = (e:any) => {
-    e.preventDefault();
-    setRoleId(e.target.value);
-  };
-
-  async function SaveUserInfo () {
-    if (user != undefined) {
-      user.userName = userName
-      user.transporterId = transporterId;
-      user.systemRoleId = parseInt(roleId)
-      user.systemRoleName = '1'
+  async function SaveRoleInfo () {
+    if (role != undefined) {
+      role.name = roleName
+      role.systemRoleId = parseInt(systemRoleId)
     }
 
-        var uid = localStorage.getItem("uid")
-        fetch('https://d736apsi01-wa02skc.azurewebsites.net/User/Update?userId=' + uid, {
+        fetch('https://d736apsi01-wa02skc.azurewebsites.net/User/UpdateSystemRole' , {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${cookie}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(user)
+          body: JSON.stringify(role)
         })
           .then(async (res) => {
-            console.log('Edit User Success')
+            console.log('Edit Role Success')
             router.back()
           })
           .catch((data) => {
@@ -161,7 +148,7 @@ const EditUser = () => {
             }}
           >
             <div className="card-edit-header">
-              <h1>Edit User</h1>
+              <h1>Edit Role</h1>
             </div>
 
         
@@ -170,8 +157,8 @@ const EditUser = () => {
               onFocus={() => setShrink(true)}
               onBlur={(e) => setShrink(!!e.target.value)}
               InputLabelProps={{ shrink: true }}
-              name="username"
-              label="Username"
+              name="rolename"
+              label="Rolename"
               /*InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -180,53 +167,14 @@ const EditUser = () => {
                 )
               }}*/
               variant="outlined"
-              value={userName}
-              onChange={handleChangeUserName}   
+              value={roleName}
+              onChange={handleChangeRoleName}   
               fullWidth
             />
-
-<TextField
-              onFocus={() => setShrink(true)}
-              onBlur={(e) => setShrink(!!e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              name="trasporterid"
-              label="TrasporterId"
-              /*InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailIcon />
-                  </InputAdornment>
-                )
-              }}*/
-              variant="outlined"
-              value={transporterId}
-              onChange={handleChangeTransporterId}   
-              fullWidth
-            />
-
-<TextField
-              onFocus={() => setShrink(true)}
-              onBlur={(e) => setShrink(!!e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              name="roleid"
-              label="RoleId"
-              /*InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailIcon />
-                  </InputAdornment>
-                )
-              }}*/
-              variant="outlined"
-              value={roleId}
-              onChange={handleChangeRoleId}   
-              fullWidth
-            />
-
 
             <div className="card-edit-button">
               <Button style={{ marginRight: '15px', background: 'red' }} className="card-edit-button-1" variant="contained" onClick={() => router.back()} >CANCLE</Button>
-              <Button style={{ marginRight: '15px', background: 'green' }} className="card-edit-button-2" variant="contained" onClick={SaveUserInfo} endIcon={<SaveIcon />} >SAVE</Button>
+              <Button style={{ marginRight: '15px', background: 'green' }} className="card-edit-button-2" variant="contained" onClick={SaveRoleInfo} endIcon={<SaveIcon />} >SAVE</Button>
             </div>
           </Stack>
         </CardContent>
@@ -235,5 +183,5 @@ const EditUser = () => {
   )
 }
 
-export default EditUser;
+export default EditRole;
 

@@ -26,6 +26,6 @@
     }
   },
   
-  "include": ["next-env.d.ts" , "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/action/cookies.ts", "app/components/datatable_user/DatatableUser.jsx"],
+  "include": ["next-env.d.ts" , "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/action/cookies.ts", "app/components/datatable_users/DatatableUser.jsx"],
   "exclude": ["node_modules"]
 }
