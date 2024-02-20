@@ -12,6 +12,5 @@ export async function GET(req:Request, { params }: { params: { id: string, token
 export async function POST(req:Request) {
     var body = await req.json()
     var request = await HttpAuthPost(`User/GetById`, body["token"])
-    console.log(JSON.parse(await request.json()))
     return new Response(JSON.stringify({response: await request.json()}))
 }

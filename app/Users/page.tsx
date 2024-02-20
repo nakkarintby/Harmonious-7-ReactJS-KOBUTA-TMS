@@ -3,7 +3,7 @@ import { AuthenticatedTemplate } from "@azure/msal-react"
 import { ThemeProvider } from "@mui/material"
 import defaultTheme from "../ShipmentStatusUpdate/props/Theme"
 import NavbarMenuTheme from "../props/MenuThemeProps/NavbarMenuTheme"
-import DatatableDocument from "../components/datatable_user/DatatableUser"
+import DatatableUsers from "../components/datatable_users/DatatableUsers"
 
 export default async function Users() {
     return (
@@ -14,7 +14,7 @@ export default async function Users() {
                         <div className="NavBoxGlobal">
                             <NavbarMenuTheme CanPreviousBack={true} />
                         </div>
-                        <DatatableDocument />
+                        <DatatableUsers />
                     </div>
                 </ThemeProvider>
             </AuthenticatedTemplate>

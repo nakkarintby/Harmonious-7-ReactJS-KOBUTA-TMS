@@ -1,0 +1,134 @@
+
+body{
+  min-height: 100%;
+  background-color: var(--bgSoft);
+}
+
+.notfound{
+  margin: auto;
+  display: flex;
+}
+
+
+.loading-toggle {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-toggle-content {
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fefefe;
+}
+
+.loading-toggle-text {
+  margin-left: 14px;
+  font-size: 24px;
+}
+
+.loading-toggle-pic {
+  width: 50px;
+  height: 50px;
+  border: 8px solid #ddd;
+  border-top: 8px solid #2196f3;
+  border-bottom: 8px solid #2196f3;
+  border-radius: 50%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.active-name:active {
+  background-color: rgba(0, 128, 0, 0.05);
+  color: red;
+}
+
+.active-name:link {
+  color: red;
+}
+
+/* visited link */
+.active-name:visited {
+  color: green;
+}
+
+/* mouse over link */
+.active-name:hover {
+  color: hotpink;
+}
+
+
+.container{
+  margin: 20px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+
+.table-card {
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.table-card .header {
+  line-height: 64px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 30px;
+}
+
+.table-card .header-item {
+  float: right;
+}
+
+.table-card .content{
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 30px;
+}
+
+
+
+.table-card .footer {
+  line-height: 56px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  text-align: right;
+  padding-right: 14px;
+}
+
+
+

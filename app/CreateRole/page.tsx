@@ -26,7 +26,7 @@ import { UserInformation } from "../constant/UserInfo/UserInformation"
 import React from "react"
 import { Stack, InputAdornment } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
-import { CreateUser } from "../constant/CreateUser/CreateUser"
+import { CreateRole } from "../constant/CreateRole/CreateRole"
 
 async function GetToken(router: AppRouterInstance) {
   var req = await CallHttp("/api/GetToken", { method: "GET" }, router)
@@ -35,12 +35,11 @@ async function GetToken(router: AppRouterInstance) {
 }
 
 
-const CreateUser = () => {
+const CreateRole = () => {
   const [cookie, setCookie] = useState('')
-  const [user, setUser] = React.useState<CreateUser>()
   const router = useRouter();
   const [shrink, setShrink] = useState(false);
-  const [userName, setUserName] = useState('')
+  const [roleName, setRoleName] = useState('')
   const [transporterId, setTransporterId] = useState('')
   const [roleId, setRoleId] = useState('')
   const [isLoading, setIsLoading] = useState(false);
@@ -73,56 +72,22 @@ const CreateUser = () => {
 
 
 
-  const handleChangeUserName = (e: any) => {
+  const handleChangeRoleName = (e: any) => {
     e.preventDefault();
-    setUserName(e.target.value);
+    setRoleName(e.target.value);
   };
 
-  const handleChangeTransporterId = (e: any) => {
-    e.preventDefault();
-    setTransporterId(e.target.value);
-  };
 
-  const handleChangeRoleId = (e: any) => {
-    e.preventDefault();
-    setRoleId(e.target.value);
-  };
-
-  async function SaveUserInfo() {
-    const modal: CreateUser = {
-      userName: '1',
-      transporterId: '1',
-      systemRoleId: 1,
-      systemRoleName: '1',
-      isDeleted: false,
-      employeeNo: '1',
-      plantId: 1,
-      role: '1',
-      status: true,
-      title: '1',
-      firstName: '1',
-      lastName: '1',
-      email: '1',
+  async function CreateRole() {
+    const modal: CreateRole = {
+      name: '1'
     };
 
     if (modal != undefined) {
-      modal.userName = userName
-      modal.transporterId = transporterId;
-      modal.systemRoleId = parseInt(roleId)
-      modal.systemRoleName = '1'
-      modal.isDeleted = false;
-      modal.employeeNo = '1'
-      modal.plantId = 0,
-        modal.role = '1'
-      modal.status = true
-      modal.title = '1'
-      modal.firstName = '1'
-      modal.lastName = '1'
-      modal.email = '1'
+      modal.name = roleName
     }
 
-
-    fetch('https://d736apsi01-wa02skc.azurewebsites.net/User/Create', {
+    fetch('https://d736apsi01-wa02skc.azurewebsites.net/User/CreateSystemRole', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${cookie}`,
@@ -131,7 +96,7 @@ const CreateUser = () => {
       body: JSON.stringify(modal)
     })
       .then(async (res) => {
-        console.log('Create User Success')
+        console.log('Create Role Success')
         router.back()
       })
       .catch((data) => {
@@ -162,17 +127,14 @@ const CreateUser = () => {
             }}
           >
             <div className="card-edit-header">
-              <h1>Create User</h1>
+              <h1>Create Role</h1>
             </div>
-
-
-
             <TextField
               onFocus={() => setShrink(true)}
               onBlur={(e) => setShrink(!!e.target.value)}
               InputLabelProps={{ shrink: true }}
-              name="username"
-              label="Username"
+              name="rolename"
+              label="Rolename"
               /*InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -181,53 +143,16 @@ const CreateUser = () => {
                 )
               }}*/
               variant="outlined"
-              value={userName}
-              onChange={handleChangeUserName}
+              value={roleName}
+              onChange={handleChangeRoleName}
               fullWidth
             />
 
-            <TextField
-              onFocus={() => setShrink(true)}
-              onBlur={(e) => setShrink(!!e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              name="trasporterid"
-              label="TrasporterId"
-              /*InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailIcon />
-                  </InputAdornment>
-                )
-              }}*/
-              variant="outlined"
-              value={transporterId}
-              onChange={handleChangeTransporterId}
-              fullWidth
-            />
-
-            <TextField
-              onFocus={() => setShrink(true)}
-              onBlur={(e) => setShrink(!!e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              name="roleid"
-              label="RoleId"
-              /*InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailIcon />
-                  </InputAdornment>
-                )
-              }}*/
-              variant="outlined"
-              value={roleId}
-              onChange={handleChangeRoleId}
-              fullWidth
-            />
 
 
             <div className="card-edit-button">
               <Button style={{ marginRight: '15px', background: 'red' }} className="card-edit-button-1" variant="contained" onClick={() => router.back()} >CANCLE</Button>
-              <Button style={{ marginRight: '15px', background: 'green' }} className="card-edit-button-2" variant="contained" onClick={SaveUserInfo} endIcon={<AddIcon />} >CREATE</Button>
+              <Button style={{ marginRight: '15px', background: 'green' }} className="card-edit-button-2" variant="contained" onClick={CreateRole} endIcon={<AddIcon />} >CREATE</Button>
             </div>
           </Stack>
         </CardContent>
@@ -236,5 +161,5 @@ const CreateUser = () => {
   )
 }
 
-export default CreateUser;
+export default CreateRole;
 
