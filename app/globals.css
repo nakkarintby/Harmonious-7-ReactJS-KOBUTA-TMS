@@ -114,6 +114,12 @@ a {
   overflow-x: hidden;
 }
 
+.content-body {
+max-width: 100rem;
+margin: 5px auto;
+padding: 10px 0;
+}
+
  .Content-LoginPage{
   display: flex;
   justify-content: center;
@@ -178,3 +184,4 @@ a {
   min-height: 150px;
   background-color: #00b09b;
  }
+
