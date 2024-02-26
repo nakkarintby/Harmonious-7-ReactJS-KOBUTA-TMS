@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 
 'use client'
-import "./DatatableUser.scss";
+import "../../components/datatable_users/DatatableUsers.scss"
 import React, { useState } from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -13,7 +14,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/AddCircleOutline';
 import Modal from 'react-modal';
 import Link from 'next/link'
 
