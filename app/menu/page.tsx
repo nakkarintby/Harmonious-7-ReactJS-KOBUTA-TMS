@@ -75,8 +75,7 @@ export default function Menu() {
       const FetchMenu = async () => {
        await GetMenu(router,instance).then((x)=>
        {
-        console.log("RS:")
-        console.log(x)
+      
         setMenu(x);
        }).catch((x)=>{
         setMenu([]);
@@ -92,30 +91,21 @@ export default function Menu() {
       <ThemeProvider theme={defaultTheme}>
         <NavbarMenuTheme CanPreviousBack={false} />
         <div className="menu-main-block">
-          <div className="menu-button-group">
-            {Menu?.map((row, index) => {
-              if (row.menuGroup == "TMS") {
-                if (
-                  row.actionDisplay === true &&
-                  row.canCheckDisplay === true
-                ) {
-                  return (
-                    <div key={index}>
-                      <a href={`${row.href}`} key={index}>
-                        <button
-                          className="menu-button-props"
-                          onClick={async () => {}}
-                          key={index}
-                        >
-                          {row.nameTH}
-                        </button>
-                      </a>
-                    </div>
-                  );
-                }
-              }
-            })}
-          </div>
+            <div className='menu-button-group'>
+                { Menu?.map((row, index)=>{
+                    if(row.actionDisplay === true && row.canCheckDisplay === true){
+                        return(
+                            <div key={index} style={{margin: "10px"}} >
+                                <a href={`${row.href}`} key={index} >
+                                    <button className='menu-button-props' onClick={async()=>{}} key={index}>
+                                        {row.nameTH}
+                                    </button>
+                                </a>
+                            </div>)
+                    }
+                })}
+              
+            </div>
         </div>
       </ThemeProvider>
     </AuthenticatedTemplate>

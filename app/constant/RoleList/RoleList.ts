@@ -1,11 +1,11 @@
 'use client'
-export interface GetUser {
+export interface GetRoleList {
   status: string
-  data: User 
+  data: RoleList
   error: any
 }
 
-export interface User  {
+export interface RoleList {
   userId: number
   userName: string
   transporterId: string

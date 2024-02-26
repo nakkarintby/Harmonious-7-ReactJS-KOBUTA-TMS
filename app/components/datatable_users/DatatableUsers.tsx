@@ -13,7 +13,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
-// import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/Add';
 import Modal from 'react-modal';
 import Link from 'next/link'
 
@@ -25,7 +25,6 @@ async function GetUserList(router: AppRouterInstance) {
 }
 
 async function viewInfo(params: any) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
   localStorage.setItem('uid', params);
   router.push('/EditUser');
@@ -151,10 +150,7 @@ const DatatableDocument = () => {
 
         <div className="item-header-space"></div>
 
-        {/* <Button className="item-header-button" variant="contained" endIcon={<AddIcon />} onClick={() => router.push('/CreateUser')} >
-          CREATE
-        </Button> */}
-        <Button className="item-header-button" variant="contained"  onClick={() => router.push('/CreateUser')} >
+        <Button className="item-header-button" variant="contained" endIcon={<AddIcon />} onClick={() => router.push('/CreateUser')} >
           CREATE
         </Button>
       </div>
