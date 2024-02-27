@@ -53,6 +53,7 @@ interface TabModel {
 interface CreateCapacityRegisterWebModel {
   planLoad: string;
   transportId: string;
+  returnTime : string | null;
   licenseTail: string;
 }
 
@@ -172,6 +173,7 @@ async function CreateCapacityRegisterWeb(
     {
       planLoad: obj.planLoad,
       transportId: obj.transportId,
+      return : obj.returnTime,
       licenseTail: obj.licenseTail,
     },
     {
@@ -567,9 +569,8 @@ const [selectedLicense , setSelectedLicense] = React.useState<CreateCapacityRegi
       .then((result) => {
         if (result.isConfirmed) {
           let tail = localStorage.getItem("tail") ?? ""
-          let retunrTime = localStorage.getItem("returnTime")
-
-          AddLoadRound(tail);
+          let retunrTime = localStorage.getItem("returnTime") ?? null;
+          AddLoadRound(tail , retunrTime);
           withReactContent(Swal).fire({
             title: "เพิ่มเที่ยวรถสำเร็จ",
             text: `${tail}`,
@@ -590,7 +591,7 @@ const [selectedLicense , setSelectedLicense] = React.useState<CreateCapacityRegi
     setCapRegisList(data);
   };
 
-  function AddLoadRound(selectedLicense: string) {
+  function AddLoadRound(selectedLicense: string , retunrTime : string | null) {
     let item = selectedLicense;
     let tempData = capRegisList;
     let selectedList = _.maxBy(
@@ -602,6 +603,7 @@ const [selectedLicense , setSelectedLicense] = React.useState<CreateCapacityRegi
 
     let addModel: CreateCapacityRegisterWebModel = {
       licenseTail: item,
+      returnTime : retunrTime,
       planLoad: dayjs(dateValue).format("YYYY-MM-DD"),
       transportId: transportSelected,
     };
