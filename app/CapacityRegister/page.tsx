@@ -167,7 +167,7 @@ async function CreateCapacityRegisterWeb(
   };
 
   let resultToken = await instance.acquireTokenSilent(accessTokenRequest);
-  const { data } = await axios.post(
+  const { data } = axios.post(
     "https://d736apsi01-wa02skc.azurewebsites.net/CapacityRegister/CreateCapacityRegisterWEB",
     {
       planLoad: obj.planLoad,
@@ -205,6 +205,11 @@ async function UpdateCapacityRegisterWeb(
     }
   );
 
+if (data.status == "error") {
+  return data.message;
+}else{
+  return "สำเร็จ";
+}
 
 }
 
@@ -249,7 +254,7 @@ export default function CapacityRegister() {
     CapacityRegisterModel[]
   >([]);
   const [dateValue, setDateValue] = React.useState<Dayjs | null>(
-    dayjs(moment().format("YYYY-MM-DD"))
+    dayjs(moment().add(1,'day').format("YYYY-MM-DD"))
   );
   const [transportList, setTransportList] = React.useState<string[]>([]);
   const [transportSelected, setTransportSelected] = React.useState<string>("0");
@@ -267,6 +272,9 @@ export default function CapacityRegister() {
     new Set()
   );
   const [selectedHd, setSelectedHd] = React.useState<Set<number>>(new Set());
+const [selectedLicense , setSelectedLicense] = React.useState<CreateCapacityRegisterWebModel | null>(null);
+
+
   const handleCheckboxRepairChange = (rowId: number) => {
     setDisabledRepairRows((prev) => {
       const newDisabledRows = new Set(prev);
@@ -443,6 +451,7 @@ export default function CapacityRegister() {
 
   const handleClickUpload = () => {
     let items = capRegisterUpdateList;
+    console.log(items)
     let models: UpdateCapacityRegisterWebModel[] = [];
     let timerInterval: any;
     if (items.length > 0) {
@@ -469,50 +478,57 @@ export default function CapacityRegister() {
             })
             .then((rs) => {
               if (rs.isConfirmed) {
-                Swal.fire({
-                  title: "บันทึกข้อมูลสำเร็จ",
-                  icon: "success",
-                  showConfirmButton: false,
-                  didOpen: () => {
-                    // Swal.showLoading();
-                    timerInterval = setInterval(() => {
-                      _(items).forEach(function (n: CapacityRegisterModel) {
-                        models.push({
-                          capacityRegisId: n.capacityRegisId,
-                          planLoad: n.planLoad,
-                          transportId: n.transportId,
-                          loadRound: n.loadRound,
-                          vehicleTypeCode: n.vehicleTypeCode ?? "",
-                          licenseTail: n.licenseTail,
-                          returnTime: n.returnTime,
-                          repair: n.repair,
-                          leave: n.leave,
-                          sapStatus: n.sapStatus == null ? "I" : "U",
-                        });
-                      });
-
-                      UpdateCapacityRegisterWeb(instance, models)
-                        .then((x) => {
-                          let Item = _.filter(capRegisList, { isUpdate: true });
-                          _.find(Item).isUpdate = false;
-                          _(capRegisList).forEach(
-                            (x: CapacityRegisterModel) => {
-                              x.isUpdate = false;
-                            }
-                          );
-                          setCapRegisterUpdateList([]);
-                          setCapRegisList(capRegisList);
-                          window.location.reload();
-                        })
-                        .catch((x) => {
-                          alert("X");
-                        });
-                    }, 100);
-                  },
-                  willClose: () => {
-                    clearInterval(timerInterval);
-                  },
+                _(items).forEach(function (n: CapacityRegisterModel) {
+                  models.push({
+                    capacityRegisId: n.capacityRegisId,
+                    planLoad: n.planLoad,
+                    transportId: n.transportId,
+                    loadRound: n.loadRound,
+                    vehicleTypeCode: n.vehicleTypeCode ?? "",
+                    licenseTail: n.licenseTail,
+                    returnTime: n.returnTime,
+                    repair: n.repair,
+                    leave: n.leave,
+                    sapStatus: n.sapStatus == null ? "I" : "U",
+                  });
                 });
+                UpdateCapacityRegisterWeb(instance, models)
+                  .then((x) => {
+                    console.log(x)
+                    let Item = _.filter(capRegisList, { isUpdate: true });
+                    _.find(Item).isUpdate = false;
+                    _(capRegisList).forEach(
+                      (x: CapacityRegisterModel) => {
+                        x.isUpdate = false;
+                      }
+                    );
+                    setCapRegisterUpdateList([]);
+                    setCapRegisList(capRegisList);
+                  })
+                  .catch((x) => {
+                    Swal.fire({
+                      title: "บันทึกข้อมูลไม่สำเร็จ",
+                      text : x,
+                      icon: "error",
+                      showConfirmButton: false,
+                    });
+                  });
+
+                  Swal.fire({
+                    title: "บันทึกข้อมูลสำเร็จ",
+                    icon: "success",
+                    showConfirmButton: false,
+                    didOpen: () => {
+                      timerInterval = setInterval(() => {
+                        window.location.reload();
+                      }, 500);
+                    },
+                    willClose: () => {
+                      clearInterval(timerInterval);
+                    },
+                  });
+
+
               }
             });
         }
@@ -550,10 +566,13 @@ export default function CapacityRegister() {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          AddLoadRound(selectedLicense);
+          let tail = localStorage.getItem("tail") ?? ""
+          let retunrTime = localStorage.getItem("returnTime")
+
+          AddLoadRound(tail);
           withReactContent(Swal).fire({
             title: "เพิ่มเที่ยวรถสำเร็จ",
-            text: `${selectedLicense}`,
+            text: `${tail}`,
             icon: "success",
           });
         }
@@ -591,7 +610,6 @@ export default function CapacityRegister() {
       capRegisList.push(selectedList);
       CreateCapacityRegisterPage(capRegisList);
     });
-
   }
 
   async function CreateTabCapacityRegister(

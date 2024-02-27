@@ -52,12 +52,20 @@ import zIndex from "@mui/material/styles/zIndex";
 const axios = require("axios");
 var _ = require("lodash");
 
+interface CreateCapacityRegisterWebModel {
+  planLoad: string;
+  transportId: string;
+  licenseTail: string;
+}
+
 export default function AddLoadRoundComponent({
   data,
-  originList,
+  originList
+
 }: {
   data: string[];
   originList: CapacityRegisterModel[];
+
 }) {
   const [licenseTailList, setLicenseTailList] = React.useState<string[]>([]);
   const [capacityList, setCapacityList] = React.useState<
@@ -68,7 +76,6 @@ export default function AddLoadRoundComponent({
   const [tigerTime, setTigerTime] = React.useState<boolean>(true);
 
   function GetTime(value: string) {
-    
     if (value != null) {
       setTigerTime(false);
       let objSelected = _.filter(
@@ -85,9 +92,13 @@ export default function AddLoadRoundComponent({
       );
       setTimePickerval(objMaxLoadRound.returnTime);
       setPlanLoad(objMaxLoadRound.planLoad);
+      localStorage.setItem("tail" , value)
+      localStorage.setItem("returnTime" , objMaxLoadRound.returnTime)
     } else {
       setTimePickerval("");
       setTigerTime(true);
+      localStorage.setItem("tail" , "")
+      localStorage.setItem("returnTime" , "")
     }
   }
 
@@ -145,15 +156,12 @@ export default function AddLoadRoundComponent({
                     : dayjs(`${planLoad}T${timePickerval}`).add(10, "m")
                 }
                 value={
-                  timePickerval == ""  
+                  timePickerval == ""
                     ? null
                     : dayjs(`${planLoad}T${timePickerval}`).add(10, "m")
                 }
                 slotProps={{ textField: { size: "small" } }}
                 timeSteps={{ minutes: 10 }}
-                // onChange={(newValue) =>
-                //   handleTimeChange(newValue, row.capacityRegisId)
-                // }
               />
             </LocalizationProvider>
           </Grid>
