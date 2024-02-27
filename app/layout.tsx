@@ -18,6 +18,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  
   const msalInstancea = new PublicClientApplication(msalConfig);
   return (
     <html lang="en">
