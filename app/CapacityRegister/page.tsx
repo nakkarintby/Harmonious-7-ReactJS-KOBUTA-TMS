@@ -644,18 +644,49 @@ const [selectedLicense , setSelectedLicense] = React.useState<CreateCapacityRegi
     });
   }
 
-  function SetUpValueDisabled(capRegisList: CapacityRegisterModel[]) {
+ async function SetUpValueDisabled(capRegisList: CapacityRegisterModel[]) {
     let itemsRepair = _.filter(capRegisList, { repair: "X" });
     let itemsLeave = _.filter(capRegisList, { leave: "X" });
     let itemsReturnTime = _.reject(capRegisList, ["returnTime", null]);
     _.forEach(itemsRepair, function (value: CapacityRegisterModel) {
-      handleCheckboxRepairChange(value.capacityRegisId);
+      // handleCheckboxRepairChange(value.capacityRegisId);
+      setDisabledRepairRows((prev) => {
+        const newDisabledRows = new Set(prev);
+        if (newDisabledRows.has(value.capacityRegisId)) {
+        } else {
+          newDisabledRows.add(value.capacityRegisId);
+        }
+        return newDisabledRows;
+      });
     });
     _.forEach(itemsLeave, function (value: CapacityRegisterModel) {
-      handleCheckboxLaveChange(value.capacityRegisId);
+      // handleCheckboxLaveChange(value.capacityRegisId);
+      console.log("Repair")
+      setDisabledLeaveRows((prev) => {
+        const newDisabledRows = new Set(prev);
+        if (newDisabledRows.has(value.capacityRegisId)) {
+        } else {
+          newDisabledRows.add(value.capacityRegisId);
+        }
+        
+        return newDisabledRows;
+      });
     });
     _.forEach(itemsReturnTime, function (value: CapacityRegisterModel) {
-      handleTimePickerChange(value.capacityRegisId, value.returnTime as string);
+      // handleTimePickerChange(value.capacityRegisId, value.returnTime as string);
+      setDisabledTimePickerRows((prev) => {
+        const newDisabledRows = new Set(prev);
+        if (value.returnTime == "Invalid Date" || value.returnTime == null) {
+          if (newDisabledRows.has(value.capacityRegisId)) {
+            
+          }
+        } else {
+          if (!newDisabledRows.has(value.capacityRegisId)) {
+            newDisabledRows.add(value.capacityRegisId);
+          }
+        }
+        return newDisabledRows;
+      });
     });
   }
 
@@ -674,7 +705,7 @@ const [selectedLicense , setSelectedLicense] = React.useState<CreateCapacityRegi
      setTransportList(rsUserDetail);
      setTransportSelected(_.head(rsUserDetail));
      await CreateTabCapacityRegister(rs);
-     SetUpValueDisabled(rs);
+     await SetUpValueDisabled(rs);
     };
     FetchData();
   }, [instance]);
